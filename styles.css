@@ -1,0 +1,48 @@
+html {
+  margin: 0;
+}
+
+#topper {
+  padding: 4rem;
+  padding-top: 6rem;
+}
+
+img {
+  padding: 0;
+  margin: 0;
+}
+
+article div > img {
+  background: #fff;
+}
+
+.logo {
+  height: 1.5rem;
+}
+
+.review-cakes img {
+  height: 2.5rem;
+}
+
+body {
+  background-color: #81d8d0;
+}
+
+.brand-name {
+  color: #ffc1cc;
+}
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+footer p {
+  margin-bottom: .25rem;
+}
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+div > h3 {
+  color: #ffc1cc;
+}
