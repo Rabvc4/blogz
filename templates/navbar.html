@@ -1,5 +1,3 @@
-{% extends "base.html" %}
-
 {% block navbar %}
     <header>
       <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
@@ -14,21 +12,7 @@
               <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/new_article">Add Entry</a>
-            </li>
-            <li class="nav-item dropdown">
-
-              {% with articles %}
-                <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Archive</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown03">
-                  {% for article in articles %}
-
-                  <!-- TODO create path and add sorting method -->
-                    <a class="dropdown-item" href="{{article.path}}">{{article.name}}</a>
-                  {% endfor %}
-                </div>
-              {% endwith %}
-
+              <a class="nav-link" href="/newpost">Add Entry</a>
             </li>
           </ul>
           <form class="form-inline my-2 my-md-0" action="https://duckduckgo.com" target="_blank" method="get">
