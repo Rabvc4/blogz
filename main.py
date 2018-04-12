@@ -51,17 +51,26 @@ def index():
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
+
+    print("YOUR SHIT RAN")
     if request.method == 'POST':
+        print("YOUR SHIT WAS A POST")
         name = request.form['name']
+        print("Name:", name)
+        print("Well, it made it passed name")
         image = request.form['image']
+        print("It made it passed image")
         title = request.form['title']
+        print("It made it passed title")
         content = request.form['content']
         review = request.form['review']
         food = request.form['food']
         rating = request.form['rating']
-        submitted_date = request.form['date']
+        print(name, image, title, content, review, food, rating)
+        submitted_date = int(request.form['date'])
         date = datetime.strptime(date, '%Y %b %d')
 
+        print(name, image, title, content, review, food, rating)
         # TODO - validate user's data
 
         existing_restaurant = Restaurant.query.filter_by(name=name).first()
