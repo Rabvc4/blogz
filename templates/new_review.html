@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block review %}
+<div class="container">
+  <div class="py-5 text-center">
+    <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h2>New Blog Post</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-8 order-md-1">
+
+<!-- TODO: Add name, image, title, content, review, food, rating, date -->
+
+      <form action="/new" class="needs-validation" method="post" novalidate>
+
+        <h4 class="mb-3">Restaurant</h4>
+
+          <div class="col-md-6 mb-3">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="" value="" required>
+            <div class="error">
+              Valid name is required.
+            </div>
+          </div>
+
+          <div class="col-md mb-3">
+            <label for="image">Restaurant Image</label>
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="form-control custom-file-input" id="inputGroupFile">
+                <label class="custom-file-label" for="inputGroupFile">Choose file</label>
+              </div>
+              <div class="input-group-append">
+                <span class="input-group-text" id="image">Upload</span>
+              </div>
+              <div class="error">
+                An image is required
+              </div>
+            </div>
+          </div>
+
+          <hr class="mb-4">
+          <h4 class="mb-3">Review</h4>
+          <div class="col-md-6 mb-3">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" placeholder="" value="" required>
+            <div class="error">
+              Valid name is required.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="firstName">Content</label>
+            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            <div class="error">
+              Valid name is required.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="firstName">Name of Food Reviewed</label>
+            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            <div class="error">
+              Valid name is required.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="firstName">Jessica's Review</label>
+            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            <div class="error">
+              Valid name is required.
+            </div>
+          </div>
+
+          <div class="col-md-5 mb-3">
+            <label for="country">Rating</label>
+            <select class="custom-select d-block w-100" id="country" required>
+              <option value="">Choose...</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+            <div class="error">
+              Please select a valid rating (1-5).
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="firstName">Date</label>
+            <input type="text" class="form-control" id="firstName" value="{{ date }}" required>
+            <div class="error">
+              Valid date is required.
+            </div>
+          </div>
+
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Add Entry</button>
+      </form>
+    </div>
+  </div>
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; 2018 Pretty Picky</p>
+  </footer>
+</div>
+{% endblock %}
