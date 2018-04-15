@@ -82,21 +82,19 @@ def newpost():
         food = request.form['food']
         rating = request.form['rating']
         date = convert_date(request.form['date'])
-        print(name, image.filename, title, content, review, food, rating, date)
 
-
-        # TODO - validate user's data
-
+        if name == '':
+            flash('Restaurant name is required', 'error')
+            return redirect('/newpost')
         if image.filename == '':
             flash('No selected image', 'error')
+            return redirect('/newpost', name=name)
+        if image and not allowed_file(image.filename):
+            flash('That image format is not supported')
             return redirect('/newpost')
-        if image and allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            flash('Successfully uploaded:' + filename)
 
         existing_restaurant = Restaurant.query.filter_by(name=name).first()
-        if image and not existing_restaurant:
+        if not existing_restaurant:
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash('Successfully uploaded:' + filename)
