@@ -38,65 +38,38 @@
         </div>
       </article>
 
-      <article class="py-3">
-        <div class="container">
-            <div class="col-md-6">
-              <div class="card mb-4 box-shadow bg-dark">
-                <div class="mx-auto"><h3>Five Guys</h3></div>
-                <img class="card-img-top" src="../images/burger.jpg" alt="Card image cap">
-                <div class="card-body bg-light">
-                  <p class="h4">The Best Burger I've Had So Far</p>
-                  <p class="card-text">Although my wife doesn't like beef, she likes ground beef. Yes, this system is complicated, there's a reason I need a website to track it. Ground beef good, all other beef bad. She has ordered a cheeseburger from just about anywhere they sell them. It's like that episode of <i>How I Met Your Mother</i> where Marshall is searching for the <a href="http://www.imdb.com/title/tt1256181/" target="_blank">"Best Burger in New York"</a> except, for my wife, it's her entire life.</p>
-                  <div class="h5">Official Review:
-                  <p class="h6">Five Guys has the best burger. Hi-Pointe Drive-In has a good burger too and I like their fries better than Five Guys</p></div>
-                  <section class="review-cakes">
-                    <div>Burger</div>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                  </section>
-                  <section class="review-cakes">
-                    <div>Fries</div>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                  </section>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">March 20, 2018</small>
+      {% if blog %}
+        <ul>
+          {% for review in blog %}
+            <li class="py-3">
+              <div class="container">
+                <div class="col-md-6">
+                  <div class="card mb-4 box-shadow bg-dark">
+                    <div class="mx-auto"><h3>{% restaurant.name %}</h3></div>
+                    <img class="card-img-top" src="../images/{% restaurant.image %}" alt="{% restaurant.image %}">
+                    <div class="card-body bg-light">
+                      <p class="h4">{% review.title %}</p>
+                      <p class="card-text">{% review.content %}</p>
+                      <div class="h5">Official Review:
+                      <p class="h6">{% review.review %}</p></div>
+                      <section class="review-cakes">
+                        <div>{% review.food %}</div>
+                        {% for n in range[{% review.rating %}] %}
+                            <img src="../images/favicon.ico"/>
+                        {% endfor %}
+                      <div class="d-flex justify-content-between align-items-center"></section>
+                        <small class="text-muted">{% review.date %}</small>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-        </div>
-      </article>
-
-      <article class="py-3">
-        <div class="container">
-            <div class="col-md-6">
-              <div class="card mb-4 box-shadow bg-dark">
-                <div class="mx-auto"><h3>Dairy Queen</h3></div>
-                <img class="card-img-top" src="../images/icecream.png" alt="Card image cap">
-                <div class="card-body bg-light">
-                  <p class="h4">The Queen of Dairy</p>
-                  <p class="card-text">To be given the crown for "Best Ice Cream" from someone with a sweet tooth like my wife is quite the honor. However, one key point is that much of what's considered "Ice Cream" is not ice cream. My wife will quietly rage on someone (to me, after-the-fact) if they talk about Ted Drewe's having the best "Ice cream." Homie's about to get stabbed with a spoon.</p>
-                  <div class="h5">Official Review:
-                  <p class="h6">DQ has the best ice cream, but Andy's has the best frozen custard.</p></div>
-                  <section class="review-cakes">
-                    <div>Chocolate Truffle Blizzard</div>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                  <div class="d-flex justify-content-between align-items-center"></section>
-                    <small class="text-muted">March 19, 2018</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
-      </article>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No reviews found on blog</p>
+      {% endif %}
 
     </main>
 {% endblock %}

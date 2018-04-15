@@ -17,7 +17,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
 app.secret_key = 'y337kGcys&zP3B'
 
-
 class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -114,20 +113,25 @@ def newpost():
 
     return render_template('newpost.html', date=date)
 
-@app.route('/blog', methods=['POST', 'GET'])
-def index():
-
-    return render_template('blog.html')
-
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     date = today()
+
     if request.method == 'POST':
         submitted_date = request.form['date']
         date = convert_date(submitted_date)
         return render_template('upload.html', date=date)
 
     return render_template('upload.html', date=date)
+
+@app.route('/blog', methods=['POST', 'GET'])
+def index():
+
+    if request.method == 'GET':
+        blog = Review.query.all()
+        restaurants = Restaurant.query.all()
+
+    return render_template('blog.html', blog=blog, restaurants=restaurants)
 
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
