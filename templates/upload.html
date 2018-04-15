@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      <ul>
+        {% for category,message in messages %}
+          <li class="{{category}}">{{message}}</li>
+        {% endfor %}
+      </ul>
+    {% endwith %}
+
+    <form method=post enctype=multipart/form-data>
+      <div class="col-md-6 mb-3">
+        <label for="date">Date</label>
+        <input type="date" class="form-control" name="date" value="{{ date }}" required>
+      </div>
+
+    <hr class="mb-4">
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Add Entry</button>
+    </form>
+
+{% endblock %}

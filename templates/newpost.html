@@ -6,26 +6,40 @@
     <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h2>New Blog Post</h2>
   </div>
+
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    <ul>
+      {% for category,message in messages %}
+        <li class="{{category}}">{{message}}</li>
+      {% endfor %}
+    </ul>
+  {% endwith %}
+
   <div class="row">
     <div class="col-md-8 order-md-1">
 
-      <form action="/newpost" class="needs-validation" method="POST" novalidate>
+      <form action="/newpost" class="needs-validation" method="POST" enctype=multipart/form-data novalidate>
 
         <h4 class="mb-3">Restaurant</h4>
 
           <div class="col-md-6 mb-3">
             <label for="name">Name</label>
-            <input type="text" class="form-control" name="name" placeholder="" value="" required>
+            <input type="text" class="form-control" name="name" placeholder="" value="{{ name }}" required>
           </div>
+
           <div class="col-md mb-3">
-            <label for="image">Restaurant Image</label>
+            <label for="file">Restaurant Image</label>
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="form-control custom-file-input" name="inputGroupFile">
-                <label class="custom-file-label" for="inputGroupFile">Choose file</label>
+                <label class="btn btn-primary" for="file">
+                    <input id="file" type="file" style="display:none"
+                    onchange="$('#upload-file-info').html(this.files[0].name)" name=file>
+                    Choose file</input>
+                </label>
+                <span class='label label-info' id="upload-file-info"></span>
               </div>
               <div class="input-group-append">
-                <span class="input-group-text" name="image">Upload</span>
+                <input type="submit" class="input-group-text" value=Upload>
               </div>
             </div>
           </div>
@@ -66,7 +80,7 @@
 
           <div class="col-md-6 mb-3">
             <label for="date">Date</label>
-            <input type="text" class="form-control" name="date" value="{{ date }}" required>
+            <input type="date" class="form-control" name="date" value="{{ date }}" required>
           </div>
 
         <hr class="mb-4">

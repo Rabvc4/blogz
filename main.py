@@ -1,11 +1,18 @@
 from datetime import datetime
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+import os
+import datetime
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+UPLOAD_FOLDER = './static/images'
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:launchcode@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 app.secret_key = 'y337kGcys&zP3B'
@@ -31,6 +38,8 @@ class Review(db.Model):
         self.date = date
         self.restaurant_id = restaurant
 
+    def __repr__(self):
+        return '<Review %r>' % self.title
 
 class Restaurant(db.Model):
 
@@ -43,54 +52,84 @@ class Restaurant(db.Model):
         self.name = name
         self.image = image
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/', methods=['POST', 'GET'])
-def index():
+def convert_date(date):
+    format = '%m-%d-%Y'
+    new_format = '%Y-%m-%d'
+    date = datetime.datetime.strptime(date, format).strftime(new_format)
+    return date
 
-    return render_template('blog.html', )
+def today():
+    now = datetime.datetime.now()
+    date = now.strftime("%m-%d-%Y")
+    return str(date)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
-
-    print("YOUR SHIT RAN")
+    date = str(today())
     if request.method == 'POST':
-        print("YOUR SHIT WAS A POST")
         name = request.form['name']
-        print("Name:", name)
-        print("Well, it made it passed name")
-        image = request.form['image']
-        print("It made it passed image")
+        if 'file' not in request.files:
+            flash('No file found', 'error')
+            return redirect('/newpost')
+        image = request.files['file']
         title = request.form['title']
-        print("It made it passed title")
         content = request.form['content']
         review = request.form['review']
         food = request.form['food']
         rating = request.form['rating']
-        print(name, image, title, content, review, food, rating)
-        submitted_date = int(request.form['date'])
-        date = datetime.strptime(date, '%Y %b %d')
+        date = convert_date(request.form['date'])
+        print(name, image.filename, title, content, review, food, rating, date)
 
-        print(name, image, title, content, review, food, rating)
+
         # TODO - validate user's data
 
+        if image.filename == '':
+            flash('No selected image', 'error')
+            return redirect('/newpost')
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flash('Successfully uploaded:' + filename)
+
         existing_restaurant = Restaurant.query.filter_by(name=name).first()
-        if not existing_restaurant:
-            new_restaurant = Restaurant(name, image)
+        if image and not existing_restaurant:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flash('Successfully uploaded:' + filename)
+            new_restaurant = Restaurant(name, filename)
             db.session.add(new_restaurant)
             db.session.commit()
             new_restaurant = Restaurant.query.filter_by(name=name).first()
             new_review = Review(title, content, review, food, rating, date, new_restaurant.id)
             db.session.add(new_review)
             db.session.commit()
-            return redirect('/')
+            return redirect('/blog')
         else:
-            flash('Restaurant already exists', 'error')
+            flash('Restaurant already exists')
             new_review = Review(title, content, review, food, rating, date, existing_restaurant.id)
             db.session.add(new_review)
             db.session.commit()
 
-# TODO make correct fields repopulate
-    return render_template('newpost.html')
+    return render_template('newpost.html', date=date)
+
+@app.route('/blog', methods=['POST', 'GET'])
+def index():
+
+    return render_template('blog.html')
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    date = today()
+    if request.method == 'POST':
+        submitted_date = request.form['date']
+        date = convert_date(submitted_date)
+        return render_template('upload.html', date=date)
+
+    return render_template('upload.html', date=date)
 
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
