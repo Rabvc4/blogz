@@ -38,37 +38,32 @@
         </div>
       </article>
 
-      {% if blog %}
-        <ul>
+      {% if blog|length == 0 %}
+        <p>No reviews found on blog</p>
+      {% else %}
           {% for review in blog %}
-            <li class="py-3">
+            <article class="py-3">
               <div class="container">
                 <div class="col-md-6">
                   <div class="card mb-4 box-shadow bg-dark">
-                    <div class="mx-auto"><h3>{% restaurant.name %}</h3></div>
-                    <img class="card-img-top" src="../images/{% restaurant.image %}" alt="{% restaurant.image %}">
+                    <div class="mx-auto"><h3>{{ review.name }}</h3></div>
+                    <img class="card-img-top" src="../images/{{ review.image }}" alt="{{ review.image }}">
                     <div class="card-body bg-light">
-                      <p class="h4">{% review.title %}</p>
-                      <p class="card-text">{% review.content %}</p>
+                      <p class="h4">{{ review.title }}</p>
+                      <p class="card-text">{{ review.content }}</p>
                       <div class="h5">Official Review:
-                      <p class="h6">{% review.review %}</p></div>
+                      <p class="h6">{{ review.review }}</p></div>
                       <section class="review-cakes">
-                        <div>{% review.food %}</div>
-                        {% for n in range[{% review.rating %}] %}
-                            <img src="../images/favicon.ico"/>
-                        {% endfor %}
+                        <div>{{ review.food }}</div>
                       <div class="d-flex justify-content-between align-items-center"></section>
-                        <small class="text-muted">{% review.date %}</small>
+                        <small class="text-muted">{{ review.date }}</small>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </li>
+            </article>
           {% endfor %}
-        </ul>
-      {% else %}
-        <p>No reviews found on blog</p>
       {% endif %}
 
     </main>

@@ -5,6 +5,9 @@ from werkzeug.utils import secure_filename
 import os
 import datetime
 
+from pprint import pprint
+
+
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 UPLOAD_FOLDER = './static/images'
 
@@ -128,10 +131,10 @@ def upload_file():
 def index():
 
     if request.method == 'GET':
-        blog = Review.query.all()
-        restaurants = Restaurant.query.all()
+        blog = Review.query.join(Restaurant).add_columns(Restaurant.name, Restaurant.image, Review.title, Review.content, Review.food, Review.rating, Review.date).all()
+        pprint((blog))
+    return render_template('blog.html', blog=blog)
 
-    return render_template('blog.html', blog=blog, restaurants=restaurants)
 
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
