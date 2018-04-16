@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="container">
-  <div class="py-5 text-center">
-    <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+  <div class="text-center" id="topper">
+    <img class="d-block mx-auto mb-4" src="static/images/cupcake.png" alt="" width="72">
     <h2>New Blog Post</h2>
   </div>
 
@@ -33,7 +33,7 @@
               <div class="custom-file">
                 <label class="btn btn-primary" for="file">
                     <input id="file" type="file" style="display:none"
-                    onchange="$('#upload-file-info').html(this.files[0].name)" name=file>
+                    onchange="$('#upload-file-info').html(this.files[0].name)" name=file value="{{ image }}">
                     Choose file</input>
                 </label>
                 <span class='label label-info' id="upload-file-info"></span>
@@ -45,28 +45,28 @@
           <h4 class="mb-3">Review</h4>
           <div class="col-md-6 mb-3">
             <label for="title">Title</label>
-            <input type="text" class="form-control" name="title" placeholder="" value="" required>
+            <input type="text" class="form-control" name="title" placeholder="" value="{{ title }}" required>
           </div>
 
-          <div class="col-lg">
+          <div class="col-md mb-3">
             <label for="content">Content</label>
-            <textarea type="text" class="form-control" name="content" placeholder="" value="" required></textarea>
+            <textarea type="text" class="form-control" name="content" placeholder="" rows="10" required>{{ content }}</textarea>
           </div>
 
           <div class="col-md-6 mb-3">
             <label for="food">Name of Food Reviewed</label>
-            <input type="text" class="form-control" name="food" placeholder="" value="" required>
+            <input type="text" class="form-control" name="food" placeholder="" value="{{ food }}" required>
           </div>
 
-          <div class="col-md-6 mb-3">
+          <div class="col-md mb-3">
             <label for="review">Jessica's Review</label>
-            <input type="text" class="form-control" name="review" placeholder="" value="" required>
+            <input type="text" class="form-control" name="review" placeholder="" value="{{ review }}" required>
           </div>
 
           <div class="col-md-5 mb-3">
             <label for="rating">Rating</label>
             <select class="custom-select d-block w-100" name="rating" required>
-              <option value="">Choose...</option>
+              <option value="{{ rating }}">Choose...</option>
               <option>1</option>
               <option>2</option>
               <option>3</option>

@@ -5,9 +5,6 @@ from werkzeug.utils import secure_filename
 import os
 import datetime
 
-from pprint import pprint
-
-
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 UPLOAD_FOLDER = './static/images'
 
@@ -58,11 +55,14 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def convert_date(date):
+def sql_date_format(date):
     format = '%m-%d-%Y'
     new_format = '%Y-%m-%d'
-    date = datetime.datetime.strptime(date, format).strftime(new_format)
-    return date
+    try:
+        date = datetime.datetime.strptime(date, format).strftime(new_format)
+        return date
+    except ValueError:
+        return date
 
 def today():
     now = datetime.datetime.now()
@@ -74,26 +74,33 @@ def newpost():
     date = str(today())
     if request.method == 'POST':
         name = request.form['name']
-        if 'file' not in request.files:
-            flash('No file found', 'error')
-            return redirect('/newpost')
-        image = request.files['file']
         title = request.form['title']
         content = request.form['content']
         review = request.form['review']
         food = request.form['food']
         rating = request.form['rating']
-        date = convert_date(request.form['date'])
+        date = request.form['date']
+        if 'file' not in request.files:
+            flash('No file found', 'error')
+            return render_template('newpost.html', name=name, title=title, content=content, review=review, food=food, rating=rating, date=date)
+        image = request.files['file']
 
         if name == '':
             flash('Restaurant name is required', 'error')
-            return redirect('/newpost')
+            return render_template('newpost.html', name=name, image=image, content=content, review=review, food=food, rating=rating, date=date)
         if image.filename == '':
             flash('No selected image', 'error')
-            return redirect('/newpost', name=name)
+            return render_template('newpost.html', name=name, content=content, review=review, food=food, rating=rating, date=date)
         if image and not allowed_file(image.filename):
             flash('That image format is not supported')
-            return redirect('/newpost')
+            return render_template('newpost.html', name=name, content=content, review=review, food=food, rating=rating, date=date)
+
+        if title == '':
+            flash('Title is required', 'error')
+            return render_template('newpost.html', name=name, image=image, content=content, review=review, food=food, rating=rating, date=date)
+        if content == '':
+            flash('That post had no content', 'error')
+            return render_template('newpost.html', name=name, image=image, title=title, review=review, food=food, rating=rating, date=date)
 
         existing_restaurant = Restaurant.query.filter_by(name=name).first()
         if not existing_restaurant:
@@ -104,37 +111,29 @@ def newpost():
             db.session.add(new_restaurant)
             db.session.commit()
             new_restaurant = Restaurant.query.filter_by(name=name).first()
-            new_review = Review(title, content, review, food, rating, date, new_restaurant.id)
+            new_review = Review(title, content, review, food, rating, sql_date_format(date), new_restaurant.id)
             db.session.add(new_review)
             db.session.commit()
             return redirect('/blog')
         else:
             flash('Restaurant already exists')
-            new_review = Review(title, content, review, food, rating, date, existing_restaurant.id)
+            new_review = Review(title, content, review, food, rating, sql_date_format(date), existing_restaurant.id)
             db.session.add(new_review)
             db.session.commit()
 
     return render_template('newpost.html', date=date)
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload_file():
-    date = today()
-
-    if request.method == 'POST':
-        submitted_date = request.form['date']
-        date = convert_date(submitted_date)
-        return render_template('upload.html', date=date)
-
-    return render_template('upload.html', date=date)
-
 @app.route('/blog', methods=['POST', 'GET'])
 def index():
-
     if request.method == 'GET':
-        blog = Review.query.join(Restaurant).add_columns(Restaurant.name, Restaurant.image, Review.title, Review.content, Review.food, Review.rating, Review.date).all()
-        pprint((blog))
-    return render_template('blog.html', blog=blog)
-
+        if 'id' in request.args:
+            review_id = int(request.args.get('id'))
+            print("FIRST REVIEW ID: ",review_id)
+            review = Review.query.join(Restaurant).add_columns(Restaurant.name, Restaurant.image, Review.title, Review.content, Review.food, Review.review, Review.rating, Review.date).filter(Review.id==review_id).first()
+            return render_template('review.html', review=review)
+        else:
+            blog = Review.query.join(Restaurant).add_columns(Review.id, Restaurant.name, Restaurant.image, Review.title, Review.content, Review.food, Review.review, Review.rating, Review.date).order_by(Review.date.desc()).all()
+            return render_template('blog.html', blog=blog)
 
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
