@@ -120,6 +120,8 @@ def newpost():
             new_review = Review(title, content, review, food, rating, sql_date_format(date), existing_restaurant.id)
             db.session.add(new_review)
             db.session.commit()
+            return redirect('/blog')
+
 
     return render_template('newpost.html', date=date)
 
