@@ -11,33 +11,6 @@
         </div>
       </div>
 
-      <article class="py-3">
-        <div class="container">
-            <div class="col-md-6">
-              <div class="card mb-4 box-shadow bg-dark">
-                <div class="mx-auto"><h3>Dewey's Pizza</h3></div>
-                <img class="card-img-top" src="../images/pizza.jpg" alt="Card image cap">
-                <div class="card-body bg-light">
-                  <p class="h4">If it isn't Dewey's Don't Bother</p>
-                  <p class="card-text">My wife loves Dewey's... so much so that when either of us is feeling pizza I know what to expect. Don't get me wrong, this isn't a complaint, Dewey's is very good. The problem is that our closest Dewey's is 26 minutes away, on a good day with no traffic. This is much too far to ever bring a pizza home too. According to my wife the pizza will always be cold and it won't be nearly as good heated up again in the oven.</p>
-                  <div class="h5">Official Review:
-                  <p class="h6">Favorite pizza. Has a great crust.</p></div>
-                  <section class="review-cakes">
-                    <div>Pepperoni Pizza</div>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                    <img src="../images/favicon.ico"/>
-                  <div class="d-flex justify-content-between align-items-center"></section>
-                    <small class="text-muted">March 21, 2018</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
-      </article>
-
       {% if blog|length == 0 %}
         <p>No reviews found on blog</p>
       {% else %}
@@ -47,7 +20,7 @@
                 <div class="col-md-6">
                   <div class="card mb-4 box-shadow bg-dark">
                     <div class="mx-auto"><h3>{{ review.name }}</h3></div>
-                    <img class="card-img-top" src="../images/{{ review.image }}" alt="{{ review.image }}">
+                    <img class="card-img-top" src="static/images/{{ review.image }}" alt="{{ review.image }}">
                     <div class="card-body bg-light">
                       <p class="h4">{{ review.title }}</p>
                       <p class="card-text">{{ review.content }}</p>
@@ -55,6 +28,9 @@
                       <p class="h6">{{ review.review }}</p></div>
                       <section class="review-cakes">
                         <div>{{ review.food }}</div>
+                        {% for n in range(review.rating) %}
+                          <img src="static/images/favicon.ico"/>
+                        {% endfor %}
                       <div class="d-flex justify-content-between align-items-center"></section>
                         <small class="text-muted">{{ review.date }}</small>
                       </div>
