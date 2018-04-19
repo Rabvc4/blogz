@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <form class="form-signin" action="/login" method="post">
+  <form class="form-signin text-center" action="/login" method="post">
+    <img class="mb-4" src="static/images/favicon.ico" alt="Blog Image" height="72" width="72">
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <label for="Username" class="sr-only">Username</label>
     <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>

@@ -74,7 +74,7 @@ def today():
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup']
+    allowed_routes = ['login', 'signup', './static/images']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -160,10 +160,10 @@ def newpost():
 
     return render_template('newpost.html', date=date)
 
-app.route('/', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def index():
 
-    return render_template('index.html')
+    return render_template('blog.html')
 
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
