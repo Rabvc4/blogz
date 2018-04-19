@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <form class="form-signin" action="/register" method="post">
+    <img class="mb-4" src="static/images/{{ favicon.ico }}" alt="Blog Image">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="Username" class="sr-only">Username</label>
+    <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+    <label for="password" class="sr-only">Password</label>
+    <input type="password" name="password" class="form-control" placeholder="Password" required>
+    <label for="verify" class="sr-only">Verify Password</label>
+    <input type="password" name="verify" class="form-control" placeholder="Verify" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  </form>
+{% endblock %}

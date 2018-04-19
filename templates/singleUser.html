@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main>
+
+      <div id="topper" class="jumbotron text-black rounded bg-light">
+        <div class="col-md-10 px-0">
+          <h1>Welcome to <span class="brand-name">Pretty Picky</span></h1>
+          <p class="lead my-3">My adventures living with the world's pickiest wife.</p>
+          <p class="my-0">My wife is severly <a href="https://en.wikipedia.org/wiki/Extraversion_and_introversion#Introversion" target="_blank">introverted</a>, her sentences short; her words few. Luckily for me, when she does speak she chooses to be either insightful or brutally honest. She is also a very picky eater who subsists a diet largely consisting of chicken. Needless to say she's a cheap date; she doesn't like steak and she won't touch seafood (She'll never order the "Surf and Turf"). The purpose of this blog is to entertain readers with either her brutal reviews or my missory.</p>
+        </div>
+      </div>
+
+      {% if blog|length == 0 %}
+        <p>No reviews found on blog</p>
+      {% else %}
+          {% for review in blog %}
+            <form class="py-3">
+              <div class="container">
+                <div class="col-md-6">
+                  <div class="card mb-4 box-shadow bg-dark">
+                    <a name="review-id" class="mx-auto" href="./blog?id={{ review.id }}"><h3>{{ review.name }}</h3></a>
+                    <img class="card-img-top" src="static/images/{{ review.image }}" alt="{{ review.image }}">
+                    <div class="card-body bg-light">
+                      <p class="h4">{{ review.title }}</p>
+                        <small class="text-muted">{{ review.date }}</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          {% endfor %}
+      {% endif %}
+
+    </main>
+{% endblock %}
