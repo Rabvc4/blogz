@@ -74,9 +74,9 @@ def today():
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup', './static/images']
-    if request.endpoint not in allowed_routes and 'username' not in session:
-        return redirect('/login')
+    allowed_routes = ['login', 'register', 'static']
+    if not ('username' in session or request.endpoint in allowed_routes):
+        return redirect("/login")
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
