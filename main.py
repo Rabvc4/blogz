@@ -1,58 +1,11 @@
 from datetime import datetime
 from flask import Flask, request, redirect, render_template, session, flash, url_for
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+from hashutils import make_pw_hash, check_pw_hash
+from app import app, db
+from models import Blog, User
 import os
-import datetime
 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-UPLOAD_FOLDER = './static/images'
-
-app = Flask(__name__)
-app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:MyNewPass@localhost:8889/blogz'
-app.config['SQLALCHEMY_ECHO'] = True
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-app.secret_key = 'dogs'
-
-class Blog(db.Model):
-
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(120), nullable=False)
-    content = db.Column(db.String(1000), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    def __init__(self, title, content, date, owner):
-        self.title = title
-        self.content = content
-        self.date = date
-        self.owner = owner
-
-    def __repr__(self):
-        return '<Blog %r>' % self.title
-
-class User(db.Model):
-
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(120), nullable=False)
-    first_name = db.Column(db.String(120), nullable=False)
-    last_name = db.Column(db.String(120), nullable=False)
-    avatar = db.Column(db.String(2048), default="avatar.png")
-    blog = db.relationship('Blog', backref='owner')
-
-    def __init__(self, username, password, first_name, last_name, avatar, blog):
-        self.username = username
-        self.password = password
-        self.first_name = first_name
-        self.last_name = last_name
-        self.avatar = avatar
-
-    def __repr__(self):
-        return '<User %r>' % self.username
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -72,17 +25,18 @@ def today():
     date = now.strftime("%m-%d-%Y")
     return str(date)
 
-@app.before_request
-def require_login():
-    allowed_routes = ['login', 'register', 'static']
-    if not ('username' in session or request.endpoint in allowed_routes):
-        return redirect("/login")
+#@app.before_request
+#def require_login():
+#    allowed_routes = ['login', 'register', 'static']
+#    if not ('username' in session or request.endpoint in allowed_routes):
+#        return redirect("/login")
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        print(username,password)
         user = User.query.filter_by(username=username).first()
         if user and user.password == password:
             session['username'] = username
@@ -90,11 +44,13 @@ def login():
             return redirect('/')
         else:
             flash('User password incorrect or user does not exist', 'error')
+            return redirect('/signup')
 
     return render_template('login.html')
 
 @app.route('/signup', methods=['POST', 'GET'])
-def register():
+def signup():
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -103,7 +59,10 @@ def register():
         # TODO - validate user's password
 
         existing_user = User.query.filter_by(username=username).first()
+        print("Existing user: ",existing_user)
+
         if not existing_user:
+            print("No existing user")
             new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
@@ -159,6 +118,19 @@ def newpost():
             return redirect('/blog')
 
     return render_template('newpost.html', date=date)
+
+@app.route('/blog', methods=['POST', 'GET'])
+def blog():
+
+    return render_template('singleUser.html')
+
+@app.route('/logout')
+def logout():
+    try:
+        del session['username']
+        return redirect('/login')
+    except ValueError:
+        return redirect('/login')
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
