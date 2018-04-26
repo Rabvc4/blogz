@@ -14,7 +14,7 @@
       <div id="topper" class="jumbotron text-black rounded bg-light">
         <div class="col-md-10 px-0">
           <h1>Here's everyone</h1>
-          <p class="lead my-3">It's kind of like roll-call for the cool kids.</p>
+          <p class="lead my-3">I like to think of it as roll-call for the cool kids.</p>
         </div>
       </div>
       {% for each_user in user %}
@@ -24,11 +24,13 @@
             <div class="card-body d-flex flex-column align-items-start">
               <strong class="d-inline-block mb-2 text-success">Blogger</strong>
               <h3 class="mb-0">
-                <a class="text-dark" href="./blog?user={{ each_user.username }}">{{ each_user.username }}</a>
+                <a class="text-dark" href="/blog?user={{ each_user.username }}">{{ each_user.username }}</a>
               </h3>
-              <a href="./blog?user={{ each_user.username }}">Stalk them</a>
             </div>
-            <img class="card-img-right flex-auto d-none d-md-block" src="static/images/{{ each_user.avatar }}" alt="{{ each_user.username }}" height="100" />
+            <div class="d-flex flex-column align-items-right">
+              <img class="card-img-right flex-auto d-none d-md-block" src="static/images/{{ each_user.avatar }}" alt="{{ each_user.username }}" />
+              <a class="d-flex flex-column align-items-right" href="/blog?user={{ each_user.username }}">Stalk them</a>
+            </div>
           </div>
         </div>
       </div>
