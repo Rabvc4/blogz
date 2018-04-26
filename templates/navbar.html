@@ -12,17 +12,28 @@
               <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/blog">All Posts</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="/newpost">Add Entry</a>
             </li>
           </ul>
           <form class="form-inline my-2 my-md-0" action="https://duckduckgo.com" target="_blank" method="get">
             <ul class="navbar-nav mr-auto float-right">
-              <li class="nav-item">
-                <a class="nav-link" href="/blog">{{ username }}<span class="sr-only"></span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href='/logout'>logout</a>
-              </li>
+              {% with username = session['username'] %}
+                {% if username %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="/blog?user={{ username }}">Welcome, {{ username }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href='/logout'>Logout</a>
+                  </li>
+                {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href='/login'>Login</a>
+                  </li>
+                {% endif %}
+              {% endwith %}
             </ul>
             <input id="search-term" class="form-control" type="text" placeholder="Duckduckgo Search" name="q">
           </form>

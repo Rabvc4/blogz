@@ -1,29 +1,37 @@
 {% extends "base.html" %}
-
 {% block content %}
-    <main>
 
-      {% if blog|length == 0 %}
-        <p>No reviews found on blog</p>
-      {% else %}
-          {% for review in blog %}
-            <form class="py-3">
-              <div class="container">
-                <div class="col-md-6">
-                  <div class="card mb-4 box-shadow bg-dark">
-                    <a name="review-id" class="mx-auto" href="./blog?id={{ review.id }}"><h3>{{ review.name }}</h3></a>
-                    <img class="card-img-top" src="static/images/{{ review.image }}" alt="{{ review.image }}">
-                    <div class="card-body bg-light">
-                      <p class="h4">{{ review.title }}</p>
-                        <small class="text-muted">{{ review.date }}</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          {% endfor %}
-      {% endif %}
-
-    </main>
+{% if blog|length == 0 %}
+<div id="topper" class="jumbotron text-black rounded bg-light">
+  <div class="col-md-10 px-0">
+    <h1>It doesn't look like <span class="brand-name">{{ username }}</span> has made any posts.</h1>
+    <p class="lead my-3">I guess like you'll have to stalk someone else...</p>
+  </div>
+</div>
+{% else %}
+<div id="topper" class="jumbotron text-black rounded bg-light">
+  <div class="col-md-10 px-0">
+    <h1>Wow, you sure like <span class="brand-name">{{ username }}.</span></h1>
+    <p class="lead my-3">Here you go, creeper.</p>
+  </div>
+</div>
+    {% for article in blog %}
+    <div class="container">
+      <div class="col-md-5">
+        <div class="card flex-md-row mb-4 box-shadow h-md-250">
+          <div class="card-body d-flex flex-column align-items-start">
+            <strong class="d-inline-block mb-2 text-success">Article</strong>
+            <h3 class="mb-0">
+              <a class="text-dark" href="./blog?id={{ article.id }}">{{ article.title }}</a>
+            </h3>
+            <div class="mb-1 text-muted">{{ article.date }}</div>
+            <div class="mb-1 text-muted">By <a href="/blog?user={{ article.username }}">{{ article.username }}</a></div>
+            <a href="./blog?id={{ article.id }}">Continue reading</a>
+          </div>
+          <img class="card-img-right flex-auto d-none d-md-block" src="static/images/{{ article.avatar }}" alt="{{ article.username }}" />
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+{% endif %}
 {% endblock %}

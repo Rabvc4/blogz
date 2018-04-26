@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+<section class="authenticate">
   <form class="form-signin text-center" action="/signup" method="post">
     <img class="mb-4" src="static/images/favicon.ico" alt="Blog Image" height="72" width="72">
-    <h1 class="h3 mb-3 font-weight-normal">Please Sign Up</h1>
+    <h1 class="h3 mb-3 font-weight-normal">Become one of us</h1>
     <label for="username" class="sr-only">Username</label>
     <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
     <label for="password" class="sr-only">Password</label>
@@ -12,5 +13,7 @@
     <input type="password" name="verify" class="form-control" placeholder="Verify Password" required>
     <label for="verify" class="sr-only">Verify</label>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <div class="m-3 font-weight-normal">Already have an account? <a href="/login">Login</a></div>
   </form>
+</section>
 {% endblock %}

@@ -1,4 +1,5 @@
 from app import db
+from hashutils import make_pw_hash, check_pw_hash
 
 class Blog(db.Model):
 
@@ -8,7 +9,7 @@ class Blog(db.Model):
     date = db.Column(db.Date, nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, title, content, date, owner_id):
+    def __init__(self, title, content, date, owner):
         self.title = title
         self.content = content
         self.date = date
@@ -21,18 +22,13 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(120), nullable=False)
-    first_name = db.Column(db.String(120), nullable=False)
-    last_name = db.Column(db.String(120), nullable=False)
+    pw_hash = db.Column(db.String(120), nullable=False)
     avatar = db.Column(db.String(2048), default="avatar.png")
     blog = db.relationship('Blog', backref='owner')
 
-    def __init__(self, username, password, first_name, last_name, avatar):
+    def __init__(self, username, password):
         self.username = username
-        self.password = password
-        self.first_name = first_name
-        self.last_name = last_name
-        self.avatar = avatar
+        self.pw_hash = make_pw_hash(password)
 
     def __repr__(self):
         return '<User %r>' % self.username

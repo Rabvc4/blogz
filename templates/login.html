@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<section class="authenticate">
   <form class="form-signin text-center" action="/login" method="post">
     <img class="mb-4" src="static/images/favicon.ico" alt="Blog Image" height="72" width="72">
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
@@ -9,5 +10,7 @@
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" name="password" class="form-control" placeholder="Password" required>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <div class="m-3 font-weight-normal">Don't have an account? <a href="/signup">Create one</a></div>
   </form>
+</section>
 {% endblock %}

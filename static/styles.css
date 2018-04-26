@@ -1,5 +1,34 @@
+img.card-img-right {
+  height: 5rem;
+}
+
+.authenticate {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+article {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
 .error {
   color: red;
+  background-color: yellow;
 }
 
 html {
@@ -8,7 +37,6 @@ html {
 
 #topper {
   padding: 4rem;
-  padding-top: 6rem;
 }
 
 img {
@@ -29,21 +57,13 @@ article div > img {
 }
 
 body {
-  display: -ms-flexbox;
-  display: -webkit-box;
-  -ms-flex-align: center;
-  -ms-flex-pack: center;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
   background-color: #81d8d0;
+  min-height: 75rem;
+  margin-top: 3.5rem;
 }
 
 .brand-name {
-  color: #ffc1cc;
+  color: #ffb3c1;
 }
 
 footer {
@@ -57,8 +77,21 @@ footer p {
 
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
-div > h3 {
-  color: #ffc1cc;
+div > h3, a:link {
+  text-decoration: none;
+	color: #ff6783;
+}
+
+div > h3, a:hover {
+	color: red;
+}
+
+div > h3, a:visited {
+  color: #ff6783;
+}
+
+div > h3, a:visited:hover {
+  color: red;
 }
 
 html,

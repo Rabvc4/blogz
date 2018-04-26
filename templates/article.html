@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+      <article class="py-3">
+        <div class="container">
+          <div class="col-md-6">
+
+              <img class="card-img-top" src="static/images/{{ blog.avatar }}" alt="{{ blog.username }}" style="width:42px;" />
+              <div class="card-body bg-light">
+                <p class="blog-post-meta">
+                  <small class="text-muted">{{ blog.date }} by </small>
+                  <a href="/blog?user={{ blog.username }}">{{ blog.username }}</a>
+                </p>
+                <p class="h4">{{ blog.title }}</p>
+                <p class="card-text">{{ blog.content }}</p>
+                <div class="d-flex justify-content-between align-items-center"></section>
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </article>
+{% endblock %}

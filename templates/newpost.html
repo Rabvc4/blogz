@@ -2,47 +2,16 @@
 
 {% block content %}
 <div class="container">
-  <div class="text-center" id="topper">
-    <img class="d-block mx-auto mb-4" src="static/images/cupcake.png" alt="" width="72">
+  <div class="text-center">
+    <img class="d-block mx-auto mb-4" src="static/images/EvilSmile.png" alt="evil smile" width="72">
     <h2>New Blog Post</h2>
   </div>
-
-  {% with messages = get_flashed_messages(with_categories=True) %}
-    <ul>
-      {% for category,message in messages %}
-        <li class="{{category}}">{{message}}</li>
-      {% endfor %}
-    </ul>
-  {% endwith %}
 
   <div class="row">
     <div class="col-md-8 order-md-1">
 
-      <form action="/newpost" class="needs-validation" method="POST" enctype=multipart/form-data novalidate>
+      <form action="/newpost" class="needs-validation" method="POST" novalidate>
 
-        <h4 class="mb-3">Restaurant</h4>
-
-          <div class="col-md-6 mb-3">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" name="name" placeholder="" value="{{ name }}" required>
-          </div>
-
-          <div class="col-md mb-3">
-            <label for="file">Restaurant Image</label>
-            <div class="input-group">
-              <div class="custom-file">
-                <label class="btn btn-primary" for="file">
-                    <input id="file" type="file" style="display:none"
-                    onchange="$('#upload-file-info').html(this.files[0].name)" name=file value="{{ image }}">
-                    Choose file</input>
-                </label>
-                <span class='label label-info' id="upload-file-info"></span>
-              </div>
-            </div>
-          </div>
-
-          <hr class="mb-4">
-          <h4 class="mb-3">Review</h4>
           <div class="col-md-6 mb-3">
             <label for="title">Title</label>
             <input type="text" class="form-control" name="title" placeholder="" value="{{ title }}" required>
@@ -51,28 +20,6 @@
           <div class="col-md mb-3">
             <label for="content">Content</label>
             <textarea type="text" class="form-control" name="content" placeholder="" rows="10" required>{{ content }}</textarea>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label for="food">Name of Food Reviewed</label>
-            <input type="text" class="form-control" name="food" placeholder="" value="{{ food }}" required>
-          </div>
-
-          <div class="col-md mb-3">
-            <label for="review">Jessica's Review</label>
-            <input type="text" class="form-control" name="review" placeholder="" value="{{ review }}" required>
-          </div>
-
-          <div class="col-md-5 mb-3">
-            <label for="rating">Rating</label>
-            <select class="custom-select d-block w-100" name="rating" required>
-              <option value="{{ rating }}">Choose...</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
           </div>
 
           <div class="col-md-6 mb-3">
@@ -85,8 +32,5 @@
       </form>
     </div>
   </div>
-  <footer class="my-5 pt-5 text-muted text-center text-small">
-    <p class="mb-1">&copy; 2018 Pretty Picky</p>
-  </footer>
 </div>
 {% endblock %}
