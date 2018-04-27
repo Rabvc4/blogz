@@ -30,7 +30,7 @@ def today():
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup', 'static']
+    allowed_routes = ['login', 'signup', 'static', 'blog', 'index']
     if not ('username' in session or request.endpoint in allowed_routes):
         return redirect("/login")
 
@@ -65,8 +65,11 @@ def signup():
         if not password == verify:
             flash('Those password do not match', 'error')
             return redirect('/signup')
-        if len(password)<2 or len(verify)<2:
-            flash('Usernames and passwords must be at least 3 characters long', 'error')
+        if len(password)<3 or len(verify)<3:
+            flash('Passwords must be at least 3 characters long', 'error')
+            return redirect('/signup')
+        if len(username)<3 or len(username)>15:
+            flash('Usernames must be between 3 and 15 characters long', 'error')
             return redirect('/signup')
 
         existing_user = User.query.filter_by(username=username).first()
@@ -114,10 +117,10 @@ def blog():
             return render_template('article.html', blog=blog)
         if 'user' in request.args:
             user = request.args.get('user')
-            blog = Blog.query.join(User).add_columns(User.id, User.username, User.avatar, Blog.title, Blog.content, Blog.date).filter(User.username==user).order_by(Blog.date.desc()).all()
+            blog = Blog.query.join(User).add_columns(User.id, Blog.id, User.username, User.avatar, Blog.title, Blog.content, Blog.date).filter(User.username==user).order_by(Blog.date.desc()).all()
             return render_template('singleUser.html', blog=blog, username=user)
         else:
-            blog = Blog.query.join(User).add_columns(Blog.id, User.id, User.username, User.avatar, Blog.title, Blog.content, Blog.date).order_by(Blog.date.desc()).all()
+            blog = Blog.query.join(User).add_columns(User.id, Blog.id, User.username, User.avatar, Blog.title, Blog.content, Blog.date).order_by(Blog.date.desc()).all()
             return render_template('blog.html', blog=blog)
 
 @app.route('/logout')
